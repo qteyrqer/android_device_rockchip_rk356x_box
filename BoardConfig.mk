@@ -56,6 +56,8 @@ TARGET_FORCE_PREBUILT_KERNEL := true
 ifeq ($(TARGET_FORCE_PREBUILT_KERNEL),true)
     TARGET_PREBUILT_KERNEL := $(DEVICE_PATH)/prebuilt/kernel
     TARGET_PREBUILT_DTB := $(DEVICE_PATH)/prebuilt/dtb.img
+    # [新增] 告知构建系统将预编译的 dtb.img 复制到 out 目录，供 recovery.img 打包使用
+    BOARD_PREBUILT_DTBIMAGE := $(DEVICE_PATH)/prebuilt/dtb.img
     BOARD_MKBOOTIMG_ARGS += --dtb $(TARGET_PREBUILT_DTB)
     # [更改] 保留 DTB 嵌入 boot.img，不再清空
     BOARD_INCLUDE_DTB_IN_BOOTIMG := true
