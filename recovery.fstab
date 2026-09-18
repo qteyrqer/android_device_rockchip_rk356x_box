@@ -1,27 +1,22 @@
-/mnt/internal_sd     vfat     /dev/block/platform/ff0f0000.dwmmc/by-name/user     flags=display=internal_sd
-/mnt/external_sd     vfat     /dev/block/mmcblk0p1                                flags=display=external_sd
-/system              ext4     /dev/block/by-name/system                           flags=display=system
-/vendor              ext4     /dev/block/by-name/vendor                           flags=display=vendor
-/odm                 ext4     /dev/block/by-name/odm                              flags=display=odm
-/product             ext4     /dev/block/by-name/product                          flags=display=product
-/system_ext          ext4     /dev/block/by-name/system_ext                       flags=display=system_ext
-/cache               ext4     /dev/block/by-name/cache                            flags=display=cache
-/metadata            ext4     /dev/block/by-name/metadata                         flags=display=metadata
-/data                ext4     /dev/block/by-name/userdata                         flags=display=data
-/cust                ext4     /dev/block/by-name/cust                             flags=display=cust
-/custom              ext4     /dev/block/by-name/custom                           flags=display=custom
-/radical_update      ext4     /dev/block/by-name/radical_update                   flags=display=radical_update
-/misc                emmc     /dev/block/by-name/misc                             flags=display=misc
-/uboot               emmc     /dev/block/by-name/uboot                            flags=display=uboot
-/charge              emmc     /dev/block/by-name/charge                           flags=display=charge
-/resource            emmc     /dev/block/by-name/resource                         flags=display=resource
-/parameter           emmc     /dev/block/by-name/parameter                        flags=display=parameter
-/boot                emmc     /dev/block/by-name/boot                             flags=display=boot
-/recovery            emmc     /dev/block/by-name/recovery                         flags=display=recovery
-/backup              emmc     /dev/block/by-name/backup                           flags=display=backup
-/frp                 emmc     /dev/block/by-name/frp                              flags=display=frp
-/trust               emmc     /dev/block/by-name/trust                            flags=display=trust
-/baseparamer         emmc     /dev/block/by-name/baseparamer                      flags=display=baseparamer
-/vbmeta              emmc     /dev/block/by-name/vbmeta                           flags=display=vbmeta
-/dtbo                emmc     /dev/block/by-name/dtbo                             flags=display=dtbo
-/vendor_boot         emmc     /dev/block/by-name/vendor_boot                      flags=display=vendor_boot
+# 动态分区（system/vendor/product/odm/system_ext）在 TWRP 中实际映射到 /dev/block/mapper/ 路径
+# 请务必在 TWRP 启动后，通过 adb shell 查看实际设备节点来确认
+
+/system_root ext4 /dev/block/mapper/system flags=backup=1;display="System"
+/vendor ext4 /dev/block/mapper/vendor flags=backup=1;display="Vendor";wipeingui
+/product ext4 /dev/block/mapper/product flags=backup=1;display="Product"
+/odm ext4 /dev/block/mapper/odm flags=backup=1;display="ODM"
+/system_ext ext4 /dev/block/mapper/system_ext flags=backup=1;display="SystemExt"
+
+# 物理分区使用 /dev/block/by-name/ 符号链接，TWRP 可自动解析
+/boot emmc /dev/block/by-name/boot flags=backup=1;display="Boot";flashimg=1
+/recovery emmc /dev/block/by-name/recovery flags=backup=1;display="Recovery";flashimg=1
+/misc emmc /dev/block/by-name/misc flags=backup=1;display="Misc"
+/dtbo emmc /dev/block/by-name/dtbo flags=backup=1;display="Dtbo";flashimg=1
+/vbmeta emmc /dev/block/by-name/vbmeta flags=backup=1;display="Vbmeta";flashimg=1
+/logo emmc /dev/block/by-name/logo flags=backup=1;display="Logo";flashimg=1
+/trust emmc /dev/block/by-name/trust flags=backup=1;display="Trust";flashimg=1
+
+# 用户数据与缓存
+/data ext4 /dev/block/by-name/userdata flags=backup=1;settingsstorage
+/cache ext4 /dev/block/by-name/cache flags=backup=1;wipeingui;wipeduringfactoryreset
+/metadata ext4 /dev/block/by-name/metadata flags=backup=1;display="Metadata"
